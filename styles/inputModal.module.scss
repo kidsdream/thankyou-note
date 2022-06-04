@@ -1,0 +1,47 @@
+.insertButton {
+  position: absolute;
+  right: 40px;
+  bottom: 40px;
+  width: 80px;
+  height: 80px;
+  background-color: #ed4b3d;
+  color: #fff;
+  border-radius: 50%;
+  border: none;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, .16);
+  font-size: 40px;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.4;
+  }
+}
+
+.modal__overlay{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.4);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .3s, visibility .3s;
+}
+.is_opened{
+  visibility: visible;
+  opacity: 1;
+}
+.modal__box{
+  background-color: #fff;
+  position: relative;
+  padding: 30px 20px;
+}
+.modal__closeBtn{
+  position: absolute;
+  top: 0;
+  right: 0;
+}

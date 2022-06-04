@@ -1,36 +1,40 @@
+/* eslint-disable @next/next/no-page-custom-font */
 import axios from 'axios';
+import styles from '../styles/index.module.scss';
+import Layout from '../components/layout';
+import InputModal from '../components/inputModal';
+import Head from 'next/head';
 
-function Home({ news }: {news: any}) {
+function Home({ notes }: {notes: any}) {
   const insertUser = async () => {
     await axios.post('/api/user');
   };
-  const getUser = async () => {
-    await axios.get('/api/user');
-  };
-
-  const parseNews = JSON.parse(news);
-  console.log(parseNews);
+  const parseNotes = JSON.parse(notes);
 
   return (
-    <div className="">
-      <button
-        className=""
-        onClick={() => insertUser()}>
-        Insert User
-      </button>
-      <div>
-        <h3>Firestoreのデータ一覧</h3>
-        <div>
-          {parseNews.map((arti: any, index: any) => (
-            <>
-              <div key={index}>
-                <div>{index}</div><div>{arti._fieldsProto['email']['stringValue']}</div>
-              </div>
-            </>
-          ))}
+    <>
+      <Head>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@600&display=swap" rel="stylesheet" />
+        <title>感謝ノート</title>
+      </Head>
+      <Layout>
+
+        <div className={styles.mainContents}>
+          <ul className={styles.noteContentsArea}>
+            {parseNotes.map((note: any) => (
+              <li key={note._ref['_path']['segments'][1]} className={styles.noteContent}>
+                <div className={styles.noteTo}>{note._fieldsProto['yourname']['stringValue']}へ</div>
+                <div className={styles.noteDetail}>{note._fieldsProto['content']['stringValue']}</div>
+                <div className={styles.noteFrom}>{note._fieldsProto['myname']['stringValue']}より</div>
+              </li>
+            ))}
+          </ul>
+          <InputModal />
         </div>
-      </div>
-    </div>
+      </Layout>
+    </>
   );
 };
 
@@ -49,23 +53,11 @@ export async function getStaticProps() {
     });
   }
   const db = getFirestore();
-  const querySnapshot = await db.collection('users').get();
-  const dummyNewsList: any = [
-    {
-      id: "1",
-      title: "test1",
-      content: "texttext1",
-    },
-    {
-      id: "2",
-      title: "test2",
-      content: "texttext2",
-    },
-  ];
+  const querySnapshot = await db.collection('notes').get();
 
   return {
     props: {
-      news: JSON.stringify(querySnapshot.docs),
+      notes: JSON.stringify(querySnapshot.docs),
     },
   };
 }
