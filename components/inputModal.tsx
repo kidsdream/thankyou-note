@@ -33,7 +33,7 @@ import {useState, useRef} from 'react';
 
 const App = () => {
   const [modal, setModal] = useState(false)
-  const modalRef = useRef()
+  const modalRef = useRef(null)
 
   return (
     <div>
